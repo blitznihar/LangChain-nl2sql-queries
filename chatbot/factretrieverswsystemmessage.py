@@ -6,7 +6,11 @@ from langchain.prompts import(
     MessagesPlaceholder
 )
 
+from langchain.memory import ConversationBufferMemory
+
 from langchain.agents import AgentExecutor, create_openai_functions_agent
+
+from handlers.chat_model_start_handler import ChatModelStartHandler
 
 from dotenv import load_dotenv
 
@@ -14,7 +18,10 @@ from tools.sql import run_query_tool, list_tables, describe_tables_tool
 
 load_dotenv()
 
-chat = ChatOpenAI()
+handler = ChatModelStartHandler()
+chat = ChatOpenAI(
+    callbacks=[handler]
+)
 
 tables = list_tables()
 print(tables)
@@ -28,11 +35,14 @@ prompt = ChatPromptTemplate(
             "Do not make any assumptions about what tables exist "
             "or what columns exist. Instead, use the 'describe_tables' function"
         )),
+        MessagesPlaceholder(variable_name="chat_history"),
         HumanMessagePromptTemplate.from_template("{input}"),
         MessagesPlaceholder(variable_name="agent_scratchpad")
         
     ]
 )
+
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 tools = [run_query_tool, describe_tables_tool]
 
@@ -44,7 +54,8 @@ agent = create_openai_functions_agent(
 agent_executor = AgentExecutor(
     agent=agent,
     verbose=True,
-    tools=tools
+    tools=tools,
+    memory=memory
 )
 def answerquestion(question):
     answer = agent_executor.invoke({"input": question})

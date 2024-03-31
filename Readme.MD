@@ -38,6 +38,11 @@ Or
 what are some 5 products in the database?
 ```
 
+Or
+```sh
+how many users who have provided their shipping addresses?
+```
+
 
 ##### References:
 
