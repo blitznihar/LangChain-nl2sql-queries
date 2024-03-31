@@ -32,13 +32,10 @@ agent = OpenAIFunctionsAgent(
 )
 agent_executor = AgentExecutor(
     agent=agent,
-    verbose=False,
+    verbose=True,
     tools=tools
 )
 def answerquestion(question):
     answer = agent_executor(question)
     return answer
-
-answerquestion("How many products are in the database?")
-# agent_executor("How many products are in the database?")
 

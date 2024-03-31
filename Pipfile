@@ -9,6 +9,8 @@ langchain-openai = "*"
 openai = "==1.14.2"
 python-dotenv = "*"
 langchain-community = "*"
+pydantic = "*"
+typing = "*"
 
 [dev-packages]
 

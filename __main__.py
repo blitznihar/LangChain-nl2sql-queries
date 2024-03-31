@@ -1,7 +1,7 @@
-from chatbot import factretrievers
+from chatbot import factretrievers, factretrieverswsystemmessage
 
 def chat(humanQuery):
-    return factretrievers.answerquestion(humanQuery)
+    return factretrieverswsystemmessage.answerquestion(humanQuery)
 
 
 continuechat = True
